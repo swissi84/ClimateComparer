@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Sailing
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,7 +35,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import de.syntax_institut.fakeStore.SearchView
+import de.syntax_institut.fakeStore.CompareView
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.Components.FullImageBackground
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.HomeView
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.SettingsView
@@ -115,8 +117,8 @@ fun AppNavigation() {
                         HomeView()
                     }
 
-                    composable<SearchView> {
-                        SearchView()
+                    composable<CompareView> {
+                        CompareView()
                     }
 
                     composable<SettingsView> {
@@ -133,10 +135,12 @@ fun AppNavigation() {
 object HomeView
 
 @Serializable
-object SearchView
+object CompareView
 
 @Serializable
 object SettingsView
+
+
 
 enum class NavItem(
     val route: Any,
@@ -144,6 +148,6 @@ enum class NavItem(
     val icon: ImageVector,
 ) {
     First(HomeView, "Home", Icons.Filled.Home),
-    Second(SearchView, "Image", Icons.Filled.Image),
-    Third(SettingsView, "Video", Icons.Filled.VideoLibrary),
+    Second(CompareView, "Compare", Icons.Filled.Sailing),
+    Third(SettingsView, "Settings", Icons.Filled.Settings),
 }
