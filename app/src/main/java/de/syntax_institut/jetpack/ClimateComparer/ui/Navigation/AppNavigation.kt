@@ -2,6 +2,8 @@ package de.syntax_institut.jetpack.ClimateComparer.ui.Navigation
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.widget.ImageView
+import android.widget.VideoView
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -9,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -29,12 +33,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import de.syntax_institut.fakeStore.SearchView
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.Components.FullImageBackground
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.HomeView
+import de.syntax_institut.jetpack.ClimateComparer.ui.Views.SettingsView
 import de.syntax_institut.jetpack.ClimateComparer.ui.theme.AppTheme
 import kotlinx.serialization.Serializable
 
 
+@RequiresApi(Build.VERSION_CODES.R)
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun AppNavigation() {
@@ -108,6 +115,13 @@ fun AppNavigation() {
                         HomeView()
                     }
 
+                    composable<SearchView> {
+                        SearchView()
+                    }
+
+                    composable<SettingsView> {
+                        SettingsView()
+                    }
 
                 }
             }
@@ -119,10 +133,10 @@ fun AppNavigation() {
 object HomeView
 
 @Serializable
-object ImageView
+object SearchView
 
 @Serializable
-object VideoView
+object SettingsView
 
 enum class NavItem(
     val route: Any,
@@ -130,6 +144,6 @@ enum class NavItem(
     val icon: ImageVector,
 ) {
     First(HomeView, "Home", Icons.Filled.Home),
-//    Second(ImageView, "Image", Icons.Filled.Image),
-//    Third(VideoView, "Video", Icons.Filled.VideoLibrary),
+    Second(SearchView, "Image", Icons.Filled.Image),
+    Third(SettingsView, "Video", Icons.Filled.VideoLibrary),
 }
