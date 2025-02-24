@@ -10,9 +10,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/nasalogo"
+        android:icon="@mipmap/weatherapp"
         android:label="@string/NasaApp"
-        android:roundIcon="@mipmap/nasalogo_round"
+        android:roundIcon="@mipmap/weatherapp_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="31">

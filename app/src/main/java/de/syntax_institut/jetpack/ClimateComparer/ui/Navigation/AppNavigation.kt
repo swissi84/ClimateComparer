@@ -1,4 +1,4 @@
-package de.syntax_institut.jetpack.ClimateComparer.Navigation
+package de.syntax_institut.jetpack.ClimateComparer.ui.Navigation
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -29,8 +29,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import de.syntax_institut.jetpack.ClimateComparer.Views.Components.FullImageBackground
-import de.syntax_institut.jetpack.ClimateComparer.Views.HomeView
+import de.syntax_institut.jetpack.ClimateComparer.ui.Views.Components.FullImageBackground
+import de.syntax_institut.jetpack.ClimateComparer.ui.Views.HomeView
 import de.syntax_institut.jetpack.ClimateComparer.ui.theme.AppTheme
 import kotlinx.serialization.Serializable
 
@@ -55,7 +55,7 @@ fun AppNavigation() {
                     NavigationBar(
                         modifier = Modifier
                             .graphicsLayer {
-                            shadowElevation = 4.dp.toPx()
+                            shadowElevation = 1.dp.toPx()
                         alpha = 0.9f
                     },
                         containerColor = Color.Transparent,

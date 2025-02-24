@@ -1,4 +1,4 @@
-package de.syntax_institut.jetpack.ClimateComparer.data.model
+package de.syntax_institut.jetpack.ClimateComparer.ui.model
 
 import androidx.lifecycle.ViewModel
 

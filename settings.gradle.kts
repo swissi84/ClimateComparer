@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "NasaApp"
+rootProject.name = "ClimateComparer"
 include(":app")
  

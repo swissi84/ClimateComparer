@@ -1,4 +1,4 @@
-package de.syntax_institut.jetpack.ClimateComparer.Views
+package de.syntax_institut.jetpack.ClimateComparer.ui.Views
 
 import android.os.Build
 import androidx.annotation.RequiresApi

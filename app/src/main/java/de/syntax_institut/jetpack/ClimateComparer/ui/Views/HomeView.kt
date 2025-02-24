@@ -1,4 +1,4 @@
-package de.syntax_institut.jetpack.ClimateComparer.Views
+package de.syntax_institut.jetpack.ClimateComparer.ui.Views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

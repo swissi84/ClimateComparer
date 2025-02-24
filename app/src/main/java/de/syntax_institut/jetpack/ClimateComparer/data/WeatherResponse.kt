@@ -1,4 +1,4 @@
-package de.syntax_institut.jetpack.ClimateComparer
+package de.syntax_institut.jetpack.ClimateComparer.data
 
 
 data class WeatherResponse(
