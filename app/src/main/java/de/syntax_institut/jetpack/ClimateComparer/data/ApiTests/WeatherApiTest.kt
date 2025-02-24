@@ -2,6 +2,7 @@ package de.syntax_institut.jetpack.ClimateComparer
 
 import kotlinx.coroutines.runBlocking
 
+/*
 fun main() = runBlocking {
     val api = WeatherApi.retrofitService
 
@@ -11,4 +12,4 @@ fun main() = runBlocking {
     } catch (e: Exception) {
         println("API Fehler: ${e.message}")
     }
-}
+}*/

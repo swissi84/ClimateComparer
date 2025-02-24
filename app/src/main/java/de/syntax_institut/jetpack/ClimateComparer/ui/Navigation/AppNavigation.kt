@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -36,6 +37,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import de.syntax_institut.fakeStore.CompareView
+import de.syntax_institut.jetpack.ClimateComparer.CompareViewModel
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.Components.FullImageBackground
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.HomeView
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.SettingsView
@@ -46,7 +48,9 @@ import kotlinx.serialization.Serializable
 @RequiresApi(Build.VERSION_CODES.R)
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun AppNavigation() {
+fun AppNavigation(
+    compareViewModel: CompareViewModel = viewModel()
+) {
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
 
@@ -118,7 +122,9 @@ fun AppNavigation() {
                     }
 
                     composable<CompareView> {
-                        CompareView()
+                        CompareView(
+                            compareViewModel = compareViewModel
+                        )
                     }
 
                     composable<SettingsView> {
