@@ -4,7 +4,7 @@ import de.syntax_institut.jetpack.ClimateComparer.R
 
 
 enum class WmoWeatherCode(val code: Int, val description: String, val imageRes: Int) {
-    CLEAR_SKY(0, "Klarer Himmel", R.drawable.clear_day),
+    CLEAR_SKY(0, "Klarer Himmel", R.drawable.clear),
     PARTLY_CLOUDY(1, "Leicht bewölkt", R.drawable.partly_cloudy_day),
     CLOUDY(3, "Bewölkt", R.drawable.cloudy),
     FOG(45, "Nebel", R.drawable.fog),

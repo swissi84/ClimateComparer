@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -42,13 +43,12 @@ fun WeatherView(
 
      val weatherData by compareViewModel.weatherDataState.collectAsState()
 
-    val weather = WmoWeatherCode.fromCode(weatherData?.hourly?.weather_code?.get(10) ?: 0) ?: WmoWeatherCode.CLEAR_SKY
+    val weather = WmoWeatherCode.fromCode(weatherData?.hourly?.weather_code?.get(11) ?: 0) ?: WmoWeatherCode.CLEAR_SKY
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(50.dp)
-            .background(MaterialTheme.colorScheme.background),
+            .padding(50.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -58,6 +58,12 @@ fun WeatherView(
 
         ) {
 
+
+            Text(geoCodeData.name)
+
+
+
+            Spacer(modifier.padding(20.dp))
             Image(
                 painter = painterResource(id = weather.imageRes),
                 contentDescription = weather.description,
@@ -65,6 +71,13 @@ fun WeatherView(
             )
 
             Text(weather.description, fontSize = 16.sp)
+            Spacer(modifier.padding(20.dp))
+            Text("Temperatur")
+            weatherData?.hourly?.temperature_2m?.get(11)?.let { Text("${it} Grad") }
+
+            Spacer(modifier.padding(20.dp))
+            Text("Luftfeuchtigkeit")
+            weatherData?.hourly?.relative_humidity_2m?.get(11)?.let { Text("${it} %") }
         }
     }
 
