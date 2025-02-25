@@ -1,13 +1,14 @@
 package de.syntax_institut.jetpack.ClimateComparer.data.repository
 
-import de.syntax_institut.jetpack.ClimateComparer.data.Results
+import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeData
+
 import de.syntax_institut.jetpack.ClimateComparer.data.local.FavoriteLocationsDao
 import de.syntax_institut.jetpack.ClimateComparer.data.model.FavoriteLocation
 import kotlinx.coroutines.flow.Flow
 
 interface FavoriteLocationsRepositoryInterface {
 
-    suspend fun convertLocationToFavoriteLocation(location: Results): FavoriteLocation
+    suspend fun convertLocationToFavoriteLocation(location: GeoCodeData): FavoriteLocation
     suspend fun addFavoriteLocation(favoriteLocation: FavoriteLocation)
     suspend fun getFavoriteLocations(): Flow<List<FavoriteLocation>>
     suspend fun deleteFavoriteLocation(favoriteLocation: FavoriteLocation)
@@ -17,7 +18,7 @@ class FavoriteLocationsRepositoryImpl(
     val databaseSource: FavoriteLocationsDao
 ) : FavoriteLocationsRepositoryInterface {
 
-    override suspend fun convertLocationToFavoriteLocation(location: Results): FavoriteLocation {
+    override suspend fun convertLocationToFavoriteLocation(location: GeoCodeData): FavoriteLocation {
         return FavoriteLocation(
             id = location.id,
             name = location.name,
