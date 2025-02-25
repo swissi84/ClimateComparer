@@ -9,6 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 
 const val BASE_URL2 = "https://api.open-meteo.com/v1/"
@@ -34,8 +35,13 @@ private val retrofit = Retrofit.Builder()
 
 
 interface GetWeather {
-    @GET("forecast?latitude=52.52&longitude=13.41")
-    suspend fun getWeather(): WeatherResponse
+    @GET("forecast")
+    suspend fun getWeather(
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double,
+        @Query("language") language: String = "en",
+        @Query("format") format: String = "json"
+    ) : WeatherResponse
 }
 
 object WeatherApi {

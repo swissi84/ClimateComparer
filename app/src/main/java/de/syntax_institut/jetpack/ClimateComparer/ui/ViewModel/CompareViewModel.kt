@@ -3,25 +3,28 @@ package de.syntax_institut.jetpack.ClimateComparer
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeResponse
 import de.syntax_institut.jetpack.ClimateComparer.data.Results
+import de.syntax_institut.jetpack.ClimateComparer.data.WeatherResponse
 import de.syntax_institut.jetpack.ClimateComparer.data.api.GeoCodeApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-
 open class CompareViewModel: ViewModel() {
 
-    private val api = GeoCodeApi.retrofitService
+    private val apiGeoCode = GeoCodeApi.retrofitService
+    private val apiWeather = WeatherApi.retrofitService
 
     private val _geoCodeDataState = MutableStateFlow<List<Results>>(emptyList())
     val geoCodeDataState = _geoCodeDataState.asStateFlow()
 
+    private val _weatherDataState = MutableStateFlow<WeatherResponse?>(null)
+    val weatherDataState = _weatherDataState.asStateFlow()
+
     fun loadGeoCode(geoSearch: String) {
         viewModelScope.launch {
             try {
-                val response = api.searchLocation(
+                val response = apiGeoCode.searchLocation(
                     location = geoSearch,
                     count = 100,
                     language = "en",
@@ -35,4 +38,24 @@ open class CompareViewModel: ViewModel() {
             }
         }
     }
+
+    fun loadWeatherData(latitude: Double, longitude: Double) {
+        viewModelScope.launch {
+            try {
+                val response = apiWeather.getWeather(
+                    latitude = latitude,
+                    longitude= longitude,
+                    language = "en",
+                    format = "json"
+                )
+                _weatherDataState.value = response
+
+            } catch (e: Exception) {
+                Log.e("loadGeoCode", "Error: $e")
+                _weatherDataState.value = null
+            }
+        }
+    }
+
+
 }
