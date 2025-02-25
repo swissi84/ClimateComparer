@@ -28,7 +28,7 @@ import de.syntax_institut.jetpack.ClimateComparer.ui.Views.Components.LocationCa
 @Composable
 fun CompareView(
     compareViewModel: CompareViewModel,
-    onNavigateToWeatherView: (GeoCodeData, WeatherResponse?) -> Unit,
+    onNavigateToWeatherView: (GeoCodeData) -> Unit,
 ) {
 
     val weatherData by compareViewModel.weatherDataState.collectAsState()
@@ -62,12 +62,12 @@ fun CompareView(
             Text("No results found", modifier = Modifier.align(Alignment.CenterHorizontally))
         } else {
             LazyColumn {
-                items(geoCodeData) {  results, ->
-                   val weather = weatherData
+                items(geoCodeData) {  geodata, ->
+
 
                     LocationCard(
-                        results,
-                        onClick = { onNavigateToWeatherView(results, weather) }
+                        geodata,
+                        onClick = { onNavigateToWeatherView(geodata) }
                     )
                 }
             }

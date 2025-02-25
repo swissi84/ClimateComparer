@@ -37,6 +37,8 @@ import androidx.navigation.toRoute
 import de.syntax_institut.fakeStore.CompareView
 import de.syntax_institut.jetpack.ClimateComparer.CompareViewModel
 import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeData
+import de.syntax_institut.jetpack.ClimateComparer.data.HourlyData
+
 import de.syntax_institut.jetpack.ClimateComparer.data.WeatherResponse
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.Components.FullImageBackground
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.HomeView
@@ -45,15 +47,12 @@ import de.syntax_institut.jetpack.ClimateComparer.ui.Views.WeatherView
 import de.syntax_institut.jetpack.ClimateComparer.ui.theme.AppTheme
 import kotlinx.serialization.Serializable
 
-
 @RequiresApi(Build.VERSION_CODES.R)
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun AppNavigation(
     compareViewModel: CompareViewModel = viewModel(),
-
-
-) {
+    ) {
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
 
@@ -71,9 +70,9 @@ fun AppNavigation(
                     NavigationBar(
                         modifier = Modifier
                             .graphicsLayer {
-                            shadowElevation = 1.dp.toPx()
-                        alpha = 0.9f
-                    },
+                                shadowElevation = 1.dp.toPx()
+                                alpha = 0.9f
+                            },
                         containerColor = Color.Transparent,
                         tonalElevation = 0.dp
                     )
@@ -102,8 +101,9 @@ fun AppNavigation(
                                         text = item.label,
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Bold
-                                    ) },
-                                )
+                                    )
+                                },
+                            )
                         }
                     }
                 }
@@ -127,29 +127,28 @@ fun AppNavigation(
                     composable<CompareView> {
                         CompareView(
                             compareViewModel = compareViewModel,
-                            onNavigateToWeatherView = { results, weather ->
+                            onNavigateToWeatherView = { results ->
                                 navController.navigate(
-                                    WeatherViewRoute(
-                                        id = results.id,
-                                        name = results.name,
-                                        latitude = results.latitude,
-                                        longitude = results.longitude,
-                                        elevation = results.elevation,
-                                        feature_code = results.feature_code,
-                                        country_code = results.country_code,
-                                        timezone = results.timezone,
-                                        population = results.population,
-                                        country_id = results.country_id,
-                                        country = results.country,
-
-                                    )
-                                )
-                            },
+                                        WeatherViewRoute(
+                                            id = results.id,
+                                            name = results.name,
+                                            latitude = results.latitude,
+                                            longitude = results.longitude,
+                                            elevation = results.elevation,
+                                            feature_code = results.feature_code,
+                                            country_code = results.country_code,
+                                            timezone = results.timezone,
+                                            population = results.population,
+                                            country_id = results.country_id,
+                                            country = results.country,
+                                            ),
+                                        )
+                                                      },
                         )
                     }
 
                     composable<WeatherViewRoute> {
-                      val weatherViewRoute = it.toRoute<(WeatherViewRoute)>()
+                        val weatherViewRoute = it.toRoute<(WeatherViewRoute)>()
                         Log.d("WeatherRoute", toString())
 
                         WeatherView(
@@ -166,17 +165,9 @@ fun AppNavigation(
                                 country_id = weatherViewRoute.country_id,
                                 country = weatherViewRoute.country,
                             ),
-                            compareViewModel = compareViewModel,
-                            weatherResponse = WeatherResponse(
-                                latitude = weatherViewRoute.latitude,
-                                longitude = weatherViewRoute.longitude,
-                                generationtime_ms = 0.0,
-                                utc_offset_seconds = 0,
-                                timezone = weatherViewRoute.timezone,
-                                timezone_abbreviation = "",
-                                elevation = 0.0,
-                            ),
-                            
+                            compareViewModel = compareViewModel
+
+
                         )
                     }
 
@@ -200,10 +191,6 @@ object CompareView
 object SettingsView
 
 @Serializable
-object WeatherView
-
-
-@Serializable
 data class WeatherViewRoute(
     val id: Int,
     val name: String,
@@ -216,7 +203,8 @@ data class WeatherViewRoute(
     val population: Int = 0,
     val country_id: Int = 0,
     val country: String = "",
-//    val postcodes: List<String> = emptyList()
+   
+
 )
 
 

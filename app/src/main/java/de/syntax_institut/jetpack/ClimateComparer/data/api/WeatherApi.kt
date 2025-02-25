@@ -3,6 +3,7 @@ package de.syntax_institut.jetpack.ClimateComparer
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import de.syntax_institut.jetpack.ClimateComparer.data.HourlyData
 import de.syntax_institut.jetpack.ClimateComparer.data.WeatherResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -39,9 +40,11 @@ interface GetWeather {
     suspend fun getWeather(
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
-        @Query("language") language: String = "en",
-        @Query("format") format: String = "json"
-    ) : WeatherResponse
+        @Query("hourly") hourly: String = "temperature_2m,relative_humidity_2m,weather_code",
+        @Query("forecast_days") forecastDays: Int = 1,
+
+
+        ): WeatherResponse
 }
 
 object WeatherApi {

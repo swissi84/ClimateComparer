@@ -45,8 +45,7 @@ open class CompareViewModel: ViewModel() {
                 val response = apiWeather.getWeather(
                     latitude = latitude,
                     longitude= longitude,
-                    language = "en",
-                    format = "json"
+
                 )
                 _weatherDataState.value = response
 

@@ -9,9 +9,7 @@ fun main() = runBlocking {
         val response = api.getWeather(
             latitude = 52.52,
             longitude = 13.41,
-            language = "en",
-            format = "json"
-        )
+            )
         println("API Response: ${response}")
     } catch (e: Exception) {
         println("API Fehler: ${e.message}")
