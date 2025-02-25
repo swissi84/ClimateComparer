@@ -3,7 +3,7 @@ package de.syntax_institut.jetpack.ClimateComparer
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.syntax_institut.jetpack.ClimateComparer.data.Results
+import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeData
 import de.syntax_institut.jetpack.ClimateComparer.data.WeatherResponse
 import de.syntax_institut.jetpack.ClimateComparer.data.api.GeoCodeApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ open class CompareViewModel: ViewModel() {
     private val apiGeoCode = GeoCodeApi.retrofitService
     private val apiWeather = WeatherApi.retrofitService
 
-    private val _geoCodeDataState = MutableStateFlow<List<Results>>(emptyList())
+    private val _geoCodeDataState = MutableStateFlow<List<GeoCodeData>>(emptyList())
     val geoCodeDataState = _geoCodeDataState.asStateFlow()
 
     private val _weatherDataState = MutableStateFlow<WeatherResponse?>(null)

@@ -1,10 +1,10 @@
 package de.syntax_institut.jetpack.ClimateComparer.data
 
 data class GeoCodeResponse(
-    val results: List<Results>
+    val results: List<GeoCodeData>
 )
 
-data class Results(
+data class GeoCodeData(
     val id: Int,
     val name: String,
     val latitude: Double,

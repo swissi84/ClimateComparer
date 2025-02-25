@@ -9,10 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import de.syntax_institut.jetpack.ClimateComparer.data.Results
+import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeData
 
 @Composable
-fun LocationCard(result: Results, onClick: () -> Unit) {
+fun LocationCard(result: GeoCodeData, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

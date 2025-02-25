@@ -2,6 +2,7 @@ package de.syntax_institut.jetpack.ClimateComparer.data
 
 
 data class WeatherResponse(
+
     var latitude: Double,
     var longitude: Double,
     var generationtime_ms: Double,

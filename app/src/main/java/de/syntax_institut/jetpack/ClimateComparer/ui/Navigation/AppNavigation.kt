@@ -36,7 +36,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import de.syntax_institut.fakeStore.CompareView
 import de.syntax_institut.jetpack.ClimateComparer.CompareViewModel
-import de.syntax_institut.jetpack.ClimateComparer.data.Results
+import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeData
+import de.syntax_institut.jetpack.ClimateComparer.data.WeatherResponse
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.Components.FullImageBackground
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.HomeView
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.SettingsView
@@ -49,7 +50,9 @@ import kotlinx.serialization.Serializable
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun AppNavigation(
-    compareViewModel: CompareViewModel = viewModel()
+    compareViewModel: CompareViewModel = viewModel(),
+
+
 ) {
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
@@ -124,7 +127,7 @@ fun AppNavigation(
                     composable<CompareView> {
                         CompareView(
                             compareViewModel = compareViewModel,
-                            onNavigateToWeatherView = { results ->
+                            onNavigateToWeatherView = { results, weather ->
                                 navController.navigate(
                                     WeatherViewRoute(
                                         id = results.id,
@@ -138,6 +141,7 @@ fun AppNavigation(
                                         population = results.population,
                                         country_id = results.country_id,
                                         country = results.country,
+
                                     )
                                 )
                             },
@@ -149,7 +153,7 @@ fun AppNavigation(
                         Log.d("WeatherRoute", toString())
 
                         WeatherView(
-                            results = Results(
+                            geoCodeData = GeoCodeData(
                                 id = weatherViewRoute.id,
                                 name = weatherViewRoute.name,
                                 latitude = weatherViewRoute.latitude,
@@ -163,7 +167,16 @@ fun AppNavigation(
                                 country = weatherViewRoute.country,
                             ),
                             compareViewModel = compareViewModel,
-
+                            weatherResponse = WeatherResponse(
+                                latitude = weatherViewRoute.latitude,
+                                longitude = weatherViewRoute.longitude,
+                                generationtime_ms = 0.0,
+                                utc_offset_seconds = 0,
+                                timezone = weatherViewRoute.timezone,
+                                timezone_abbreviation = "",
+                                elevation = 0.0,
+                            ),
+                            
                         )
                     }
 

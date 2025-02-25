@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -19,25 +18,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import de.syntax_institut.jetpack.ClimateComparer.CompareViewModel
-import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeResponse
-import de.syntax_institut.jetpack.ClimateComparer.data.Results
-import de.syntax_institut.jetpack.ClimateComparer.ui.Navigation.CompareView
+import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeData
+import de.syntax_institut.jetpack.ClimateComparer.data.WeatherResponse
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.Components.LocationCard
 
 
 @Composable
 fun CompareView(
     compareViewModel: CompareViewModel,
-    onNavigateToWeatherView: (Results) -> Unit,
+    onNavigateToWeatherView: (GeoCodeData, WeatherResponse?) -> Unit,
 ) {
 
-
+    val weatherData by compareViewModel.weatherDataState.collectAsState()
+    val geoCodeData by compareViewModel.geoCodeDataState.collectAsState()
 
     var searchQuery by remember { mutableStateOf("") }
-    val geoCodeData by compareViewModel.geoCodeDataState.collectAsState()
+
 
     Column(modifier = Modifier.padding(16.dp)) {
 
@@ -64,10 +62,12 @@ fun CompareView(
             Text("No results found", modifier = Modifier.align(Alignment.CenterHorizontally))
         } else {
             LazyColumn {
-                items(geoCodeData) { results ->
+                items(geoCodeData) {  results, ->
+                   val weather = weatherData
+
                     LocationCard(
                         results,
-                        onClick = { onNavigateToWeatherView(results) }
+                        onClick = { onNavigateToWeatherView(results, weather) }
                     )
                 }
             }

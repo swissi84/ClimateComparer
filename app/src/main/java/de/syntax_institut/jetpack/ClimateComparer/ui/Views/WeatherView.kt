@@ -1,37 +1,45 @@
 package de.syntax_institut.jetpack.ClimateComparer.ui.Views
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import de.syntax_institut.jetpack.ClimateComparer.CompareViewModel
-import de.syntax_institut.jetpack.ClimateComparer.data.Results
+import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeData
+import de.syntax_institut.jetpack.ClimateComparer.data.WeatherResponse
 
 
 @Composable
 fun WeatherView(
     compareViewModel: CompareViewModel,
-    results: Results,
+    geoCodeData: GeoCodeData,
+    weatherResponse: WeatherResponse,
+
     modifier: Modifier = Modifier,
 ) {
 
-     LaunchedEffect(results.latitude, results.longitude) {
+     LaunchedEffect(geoCodeData.latitude, geoCodeData.longitude) {
          compareViewModel.loadWeatherData(
-             latitude = results.latitude,
-             longitude = results.longitude,
+             latitude = geoCodeData.latitude,
+             longitude = geoCodeData.longitude,
          )
      }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(50.dp)
+            .background(Color.Gray),
+        contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier,
@@ -46,8 +54,13 @@ fun WeatherView(
 //            Text(results.country_code)
 //            Text(results.feature_code)
 //            Text(results.id.toString())
+            Text(geoCodeData.name)
+            Text(weatherResponse.timezone)
+            Text(weatherResponse.elevation.toString())
+            Text(weatherResponse.longitude.toString())
+            Text(weatherResponse.latitude.toString())
 
-//vbhjj
+
         }
     }
 
