@@ -25,12 +25,17 @@ import de.syntax_institut.jetpack.ClimateComparer.CompareViewModel
 import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeResponse
 import de.syntax_institut.jetpack.ClimateComparer.data.Results
 import de.syntax_institut.jetpack.ClimateComparer.ui.Navigation.CompareView
+import de.syntax_institut.jetpack.ClimateComparer.ui.Views.Components.LocationCard
 
 
 @Composable
 fun CompareView(
     compareViewModel: CompareViewModel,
+    onNavigateToWeatherView: (Results) -> Unit,
 ) {
+
+
+
     var searchQuery by remember { mutableStateOf("") }
     val geoCodeData by compareViewModel.geoCodeDataState.collectAsState()
 
@@ -59,33 +64,17 @@ fun CompareView(
             Text("No results found", modifier = Modifier.align(Alignment.CenterHorizontally))
         } else {
             LazyColumn {
-                items(geoCodeData) { result ->
-                    LocationItem(result)
+                items(geoCodeData) { results ->
+                    LocationCard(
+                        results,
+                        onClick = { onNavigateToWeatherView(results) }
+                    )
                 }
             }
         }
     }
 }
 
-@Composable
-fun LocationItem(result: Results) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
 
-    ) {
-        Column(modifier = Modifier.padding(8.dp)) {
-            Text(text = "Name: ${result.name}", fontWeight = FontWeight.Bold)
-            Text(text = "Country: ${result.country} (${result.country_code})")
-            Text(text = "Latitude: ${result.latitude}, Longitude: ${result.longitude}")
-            Text(text = "Timezone: ${result.timezone}")
-            Text(text = "Population: ${result.population}")
-            if (result.postcodes.isNotEmpty()) {
-                Text(text = "Postcodes: ${result.postcodes.joinToString()}")
-            }
-        }
-    }
-}
 
 

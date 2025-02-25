@@ -1,6 +1,7 @@
 package de.syntax_institut.jetpack.ClimateComparer.ui.theme
 
 import android.os.Build
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -22,9 +23,7 @@ private val DarkColorScheme = darkColorScheme(
     onTertiary = Color.White,
     onBackground = Color(0xFFFFFFFF),
     onSurface = Color(0xFFFFFFFF),
-
-
-)
+    )
 
 private val LightColorScheme = lightColorScheme(
     primary = Purple40,
@@ -36,19 +35,13 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = Color.White,
     onSecondary = Color.White,
     onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    surfaceContainer = Color(0xFF1E33A9),
-    secondaryContainer = Color(0xFF1E33A9),
-
-
-
-
-)
+    onBackground = Color(0xFF1E1E1E),
+    onSurface = Color(0xFF1F1F1F),
+    )
 
 @Composable
 fun AppTheme(
-    darkTheme: Boolean = true,
+    darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
