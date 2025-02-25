@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,8 +30,6 @@ import de.syntax_institut.jetpack.ClimateComparer.data.WeatherResponse
 fun WeatherView(
     compareViewModel: CompareViewModel,
     geoCodeData: GeoCodeData,
-
-
     modifier: Modifier = Modifier,
 ) {
 
@@ -41,15 +40,15 @@ fun WeatherView(
          )
      }
 
-     val weather by compareViewModel.weatherDataState.collectAsState()
+     val weatherData by compareViewModel.weatherDataState.collectAsState()
 
-//     val weatherEnum = WmoWeatherCode.fromCode(weather?.hourly!!.weather_code[0]) ?: WmoWeatherCode.CLEAR_SKY
+    val weather = WmoWeatherCode.fromCode(weatherData?.hourly?.weather_code?.get(10) ?: 0) ?: WmoWeatherCode.CLEAR_SKY
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(50.dp)
-            .background(Color.Gray),
+            .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -59,17 +58,13 @@ fun WeatherView(
 
         ) {
 
-//            Image(
-//                painter = painterResource(id = weather.imageRes),
-//                contentDescription = weather.description,
-//                modifier = Modifier.size(100.dp)
-//            )
-//
-//            Text(weather.description, fontSize = 16.sp)
+            Image(
+                painter = painterResource(id = weather.imageRes),
+                contentDescription = weather.description,
+                modifier = Modifier.size(100.dp)
+            )
 
-
-
-
+            Text(weather.description, fontSize = 16.sp)
         }
     }
 
