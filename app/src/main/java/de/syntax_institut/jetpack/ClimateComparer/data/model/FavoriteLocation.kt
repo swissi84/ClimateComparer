@@ -1,4 +1,4 @@
-package de.syntax_institut.jetpack.ClimateComparer.data.local
+package de.syntax_institut.jetpack.ClimateComparer.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

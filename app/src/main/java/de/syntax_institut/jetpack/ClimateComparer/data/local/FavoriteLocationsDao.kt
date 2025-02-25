@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import de.syntax_institut.jetpack.ClimateComparer.data.model.FavoriteLocation
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,7 +15,7 @@ interface FavoriteLocationsDao {
     suspend fun insertFavoriteLocation(favoriteLocation: FavoriteLocation)
 
     @Query("SELECT * FROM favorite_locations")
-    fun getAllFavoriteLocations(): Flow<List<FavoriteLocation>>
+    fun getFavoriteLocations(): Flow<List<FavoriteLocation>>
 
     @Delete
     suspend fun deleteFavoriteLocation(favoriteLocation: FavoriteLocation)
