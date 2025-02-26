@@ -36,10 +36,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import de.syntax_institut.fakeStore.CompareView
 import de.syntax_institut.jetpack.ClimateComparer.CompareViewModel
-import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeData
-import de.syntax_institut.jetpack.ClimateComparer.data.HourlyData
+import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.GeoCodeData
 
-import de.syntax_institut.jetpack.ClimateComparer.data.WeatherResponse
+import de.syntax_institut.jetpack.ClimateComparer.data.local.FavoriteLocation
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.Components.FullImageBackground
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.HomeView
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.SettingsView
@@ -52,7 +51,11 @@ import kotlinx.serialization.Serializable
 @Composable
 fun AppNavigation(
     compareViewModel: CompareViewModel = viewModel(),
+
     ) {
+
+//   val favoriteLocation by compareViewModel.markAsFavoriteLocatio
+
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
 
@@ -165,10 +168,8 @@ fun AppNavigation(
                                 country_id = weatherViewRoute.country_id,
                                 country = weatherViewRoute.country,
                             ),
-                            compareViewModel = compareViewModel
-
-
-                        )
+                            compareViewModel = compareViewModel,
+                            )
                     }
 
                     composable<SettingsView> {

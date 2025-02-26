@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import de.syntax_institut.jetpack.ClimateComparer.data.model.FavoriteLocation
 import kotlinx.coroutines.flow.Flow
 
 @Dao

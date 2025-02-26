@@ -20,8 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import de.syntax_institut.jetpack.ClimateComparer.CompareViewModel
-import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeData
-import de.syntax_institut.jetpack.ClimateComparer.data.WeatherResponse
+import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.GeoCodeData
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.Components.LocationCard
 
 

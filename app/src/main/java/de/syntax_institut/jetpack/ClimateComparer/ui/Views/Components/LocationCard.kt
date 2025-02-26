@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeData
+import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.GeoCodeData
 
 @Composable
 fun LocationCard(result: GeoCodeData, onClick: () -> Unit) {

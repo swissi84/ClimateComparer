@@ -3,14 +3,21 @@ package de.syntax_institut.jetpack.ClimateComparer
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeData
-import de.syntax_institut.jetpack.ClimateComparer.data.WeatherResponse
-import de.syntax_institut.jetpack.ClimateComparer.data.api.GeoCodeApi
+import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.GeoCodeData
+import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.WeatherResponse
+import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.GeoCodeApi
+import de.syntax_institut.jetpack.ClimateComparer.data.local.FavoriteLocation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-open class CompareViewModel: ViewModel() {
+open class CompareViewModel: ViewModel(
+
+
+) {
+
+
+
 
     private val apiGeoCode = GeoCodeApi.retrofitService
     private val apiWeather = WeatherApi.retrofitService
@@ -56,5 +63,8 @@ open class CompareViewModel: ViewModel() {
         }
     }
 
+    fun markAsFavoriteLocation(favoriteLocation: FavoriteLocation) {
+        viewModelScope.launch {
 
-}
+        }
+    }   }

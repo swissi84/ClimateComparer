@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
-import de.syntax_institut.jetpack.ClimateComparer.data.WeatherResponse
 import de.syntax_institut.jetpack.ClimateComparer.ui.Navigation.AppNavigation
 
 

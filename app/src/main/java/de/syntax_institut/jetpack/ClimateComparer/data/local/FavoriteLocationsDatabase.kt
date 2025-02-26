@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import de.syntax_institut.jetpack.ClimateComparer.data.model.FavoriteLocation
 
 @Database(
     entities = [FavoriteLocation::class],
@@ -18,7 +17,7 @@ abstract class FavoriteLocationsDatabase: RoomDatabase() {
         @Volatile
         private var instance: FavoriteLocationsDatabase? = null
 
-        fun getDatabase(context: Context): FavoriteLocationsDatabase {
+        fun getDataBase(context: Context): FavoriteLocationsDatabase {
             return instance ?: synchronized(this) {
                 Room.databaseBuilder(
                     context, FavoriteLocationsDatabase::class.java, "favorite_locations_db"

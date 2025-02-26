@@ -2,6 +2,7 @@ package de.syntax_institut.jetpack.ClimateComparer.ui.Views.Components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -24,19 +25,19 @@ fun FullImageBackground() {
             modifier = Modifier.fillMaxSize()
         )
 
-      /*  if (isSystemInDarkTheme()) {*/
+        if (isSystemInDarkTheme()) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.2f))
+                    .background(Color.Black.copy(alpha = 0.4f))
             )
-     /*   } else {
+        } else {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.White.copy(alpha = 0.5f))
+                    .background(Color.White.copy(alpha = 0.01f))
             )
-        }*/
+        }
     }
 }
 

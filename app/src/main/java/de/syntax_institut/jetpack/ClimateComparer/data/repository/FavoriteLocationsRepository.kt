@@ -1,9 +1,9 @@
 package de.syntax_institut.jetpack.ClimateComparer.data.repository
 
-import de.syntax_institut.jetpack.ClimateComparer.data.GeoCodeData
+import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.GeoCodeData
 
 import de.syntax_institut.jetpack.ClimateComparer.data.local.FavoriteLocationsDao
-import de.syntax_institut.jetpack.ClimateComparer.data.model.FavoriteLocation
+import de.syntax_institut.jetpack.ClimateComparer.data.local.FavoriteLocation
 import kotlinx.coroutines.flow.Flow
 
 interface FavoriteLocationsRepositoryInterface {

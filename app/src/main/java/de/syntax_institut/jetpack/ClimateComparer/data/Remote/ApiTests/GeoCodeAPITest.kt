@@ -1,6 +1,6 @@
 package de.syntax_institut.jetpack.ClimateComparer
 
-import de.syntax_institut.jetpack.ClimateComparer.data.api.GeoCodeApi
+import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.GeoCodeApi
 import kotlinx.coroutines.runBlocking
 
 

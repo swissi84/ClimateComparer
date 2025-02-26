@@ -1,6 +1,5 @@
-package de.syntax_institut.jetpack.ClimateComparer.data
+package de.syntax_institut.jetpack.ClimateComparer.data.Remote.api
 
-import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
 
 data class WeatherResponse(

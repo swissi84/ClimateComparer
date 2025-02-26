@@ -1,11 +1,13 @@
-package de.syntax_institut.jetpack.ClimateComparer.data
+package de.syntax_institut.jetpack.ClimateComparer.data.local
 
-data class GeoCodeResponse(
-    val results: List<GeoCodeData>
-)
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class GeoCodeData(
+@Entity(tableName = "favorite_locations")
+data class FavoriteLocation(
+    @PrimaryKey()
     val id: Int,
+
     val name: String,
     val latitude: Double,
     val longitude: Double,
@@ -16,5 +18,5 @@ data class GeoCodeData(
     val population: Int = 0,
     val country_id: Int = 0,
     val country: String = "",
-    val postcodes: List<String> = emptyList()
-    )
+
+)

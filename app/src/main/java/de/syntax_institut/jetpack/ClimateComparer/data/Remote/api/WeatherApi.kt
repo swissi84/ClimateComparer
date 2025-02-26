@@ -3,8 +3,7 @@ package de.syntax_institut.jetpack.ClimateComparer
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import de.syntax_institut.jetpack.ClimateComparer.data.HourlyData
-import de.syntax_institut.jetpack.ClimateComparer.data.WeatherResponse
+import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.WeatherResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
