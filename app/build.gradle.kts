@@ -81,5 +81,8 @@ dependencies {
     //API Logger
     implementation(libs.logging.interceptor)
 
+    // ViewModel
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
 
 }

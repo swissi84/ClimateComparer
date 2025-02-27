@@ -49,13 +49,9 @@ import kotlinx.serialization.Serializable
 @RequiresApi(Build.VERSION_CODES.R)
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun AppNavigation(
-    compareViewModel: CompareViewModel = viewModel(),
+fun AppNavigation() {
 
-    ) {
-
-//   val favoriteLocation by compareViewModel.markAsFavoriteLocatio
-
+    val compareViewModel: CompareViewModel = viewModel()
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
 
@@ -132,21 +128,21 @@ fun AppNavigation(
                             compareViewModel = compareViewModel,
                             onNavigateToWeatherView = { results ->
                                 navController.navigate(
-                                        WeatherViewRoute(
-                                            id = results.id,
-                                            name = results.name,
-                                            latitude = results.latitude,
-                                            longitude = results.longitude,
-                                            elevation = results.elevation,
-                                            feature_code = results.feature_code,
-                                            country_code = results.country_code,
-                                            timezone = results.timezone,
-                                            population = results.population,
-                                            country_id = results.country_id,
-                                            country = results.country,
-                                            ),
-                                        )
-                                                      },
+                                    WeatherViewRoute(
+                                        id = results.id,
+                                        name = results.name,
+                                        latitude = results.latitude,
+                                        longitude = results.longitude,
+                                        elevation = results.elevation,
+                                        feature_code = results.feature_code,
+                                        country_code = results.country_code,
+                                        timezone = results.timezone,
+                                        population = results.population,
+                                        country_id = results.country_id,
+                                        country = results.country,
+                                    ),
+                                )
+                            },
                         )
                     }
 
@@ -155,6 +151,7 @@ fun AppNavigation(
                         Log.d("WeatherRoute", toString())
 
                         WeatherView(
+                            compareViewModel = compareViewModel,
                             geoCodeData = GeoCodeData(
                                 id = weatherViewRoute.id,
                                 name = weatherViewRoute.name,
@@ -167,9 +164,9 @@ fun AppNavigation(
                                 population = weatherViewRoute.population,
                                 country_id = weatherViewRoute.country_id,
                                 country = weatherViewRoute.country,
-                            ),
-                            compareViewModel = compareViewModel,
                             )
+
+                        )
                     }
 
                     composable<SettingsView> {
@@ -204,11 +201,9 @@ data class WeatherViewRoute(
     val population: Int = 0,
     val country_id: Int = 0,
     val country: String = "",
-   
-
-)
 
 
+    )
 
 
 enum class NavItem(

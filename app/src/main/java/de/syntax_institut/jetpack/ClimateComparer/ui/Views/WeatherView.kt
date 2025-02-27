@@ -124,7 +124,7 @@ fun WeatherView(
             }
 
             IconButton(
-                onClick = { /*markLocationAsFavorite(favoriteLocation)*/ }
+                onClick = { compareViewModel.markAsFavoriteLocation(geoCodeData)}
             ) {
                 Icon(
                     imageVector = Icons.Default.HeartBroken,
