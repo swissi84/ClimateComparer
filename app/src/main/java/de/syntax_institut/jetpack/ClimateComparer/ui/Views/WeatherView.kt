@@ -14,12 +14,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.HeartBroken
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,6 +36,8 @@ import de.syntax_institut.jetpack.ClimateComparer.CompareViewModel
 import de.syntax_institut.jetpack.ClimateComparer.R
 import de.syntax_institut.jetpack.ClimateComparer.WeatherComponents.WmoWeatherCode
 import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.GeoCodeData
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 
@@ -48,11 +45,9 @@ import java.util.Calendar
 fun WeatherView(
     compareViewModel: CompareViewModel,
     geoCodeData: GeoCodeData,
-//    favoriteLocation: FavoriteLocation,
-//    markLocationAsFavorite: (FavoriteLocation) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
+) {
 
-    ) {
 
     var isFavorite by remember { mutableStateOf(false) }
 
@@ -68,15 +63,13 @@ fun WeatherView(
     val calendar = Calendar.getInstance()
     val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
 
-    val weather = WmoWeatherCode.fromCode(weatherData?.hourly?.weather_code?.get(currentHour - 1) ?: 0)
+    val weather = WmoWeatherCode.fromCode(weatherData?.hourly?.weather_code?.get(currentHour) ?: 0)
         ?: WmoWeatherCode.CLEAR_SKY
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-
             .background(Color.Black.copy(alpha = 0.4f)),
-
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -84,12 +77,12 @@ fun WeatherView(
                 .padding(6.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
-
         ) {
 
             Text(
-               text = geoCodeData.name,
-                style = MaterialTheme.typography.headlineLarge
+                text = geoCodeData.name,
+                style = MaterialTheme.typography.headlineLarge,
+                color = Color.White
             )
 
             Image(
@@ -98,29 +91,33 @@ fun WeatherView(
                 modifier = Modifier.size(150.dp)
             )
 
-            Text(weather.description, fontSize = 20.sp)
-
-            Spacer(modifier.padding(20.dp))
-            Text("Temperatur")
-            weatherData?.hourly?.temperature_2m?.get(11)?.let { Text("${it} °C") }
-
-            Spacer(modifier.padding(20.dp))
-            Text("Luftfeuchtigkeit")
-            weatherData?.hourly?.relative_humidity_2m?.get(11)?.let { Text("${it} %") }
+            Text(weather.description, fontSize = 20.sp, color = Color.White)
 
             Spacer(modifier.padding(20.dp))
 
-            LazyRow(
-                Modifier.fillMaxWidth(),
-            ) {
+            Text("Temperatur", color = Color.White)
+            weatherData?.hourly?.temperature_2m?.get(11)?.let { Text("${it} °C", color = Color.White) }
+
+            Spacer(modifier.padding(20.dp))
+
+            Text("Luftfeuchtigkeit", color = Color.White)
+            weatherData?.hourly?.relative_humidity_2m?.get(11)?.let { Text("${it} %", color = Color.White) }
+
+            Spacer(modifier.padding(20.dp))
+
+            LazyRow(Modifier.fillMaxWidth()) {
                 weatherData?.hourly?.time?.indices?.toList()?.let { indices ->
                     items(indices.size) { index ->
                         Column(
                             modifier = Modifier.padding(8.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
+                            // Nur die Stunden und Minuten anzeigen
+                            val timeString = weatherData!!.hourly.time[index]
+                            val formattedTime = LocalDateTime.parse(timeString, DateTimeFormatter.ISO_DATE_TIME)
+                                .format(DateTimeFormatter.ofPattern("HH:mm"))
 
-                            Text(weatherData!!.hourly.time[index])
+                            Text(formattedTime, color = Color.White)
 
                             Image(
                                 painter = painterResource(
@@ -132,9 +129,9 @@ fun WeatherView(
                             )
 
                             weatherData?.hourly?.temperature_2m?.get(index)
-                                ?.let { Text("${it} °C") }
+                                ?.let { Text("${it} °C", color = Color.White) }
                             weatherData?.hourly?.relative_humidity_2m?.get(index)
-                                ?.let { Text("${it} %") }
+                                ?.let { Text("${it} %", color = Color.White) }
                         }
                     }
                 }
@@ -143,11 +140,8 @@ fun WeatherView(
             Spacer(modifier.padding(20.dp))
 
             IconToggleButton(
-
                 checked = isFavorite,
-                onCheckedChange = {
-                    isFavorite = !isFavorite
-                }
+                onCheckedChange = { isFavorite = !isFavorite }
             ) {
                 Icon(
                     tint = if (isFavorite) {
@@ -157,9 +151,9 @@ fun WeatherView(
                     },
                     modifier = modifier
                         .graphicsLayer {
-                        scaleX = 1.8f
-                        scaleY = 1.8f
-                    },
+                            scaleX = 1.8f
+                            scaleY = 1.8f
+                        },
                     imageVector = if (isFavorite) {
                         Icons.Filled.Favorite
                     } else {
