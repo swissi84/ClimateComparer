@@ -33,6 +33,7 @@ import de.syntax_institut.jetpack.ClimateComparer.R
 import de.syntax_institut.jetpack.ClimateComparer.WeatherComponents.WmoWeatherCode
 import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.GeoCodeData
 import de.syntax_institut.jetpack.ClimateComparer.data.local.FavoriteLocation
+import java.util.Calendar
 
 
 @Composable
@@ -46,15 +47,19 @@ fun WeatherView(
     ) {
 
     LaunchedEffect(geoCodeData.latitude, geoCodeData.longitude) {
-         compareViewModel.loadWeatherData(
-             latitude = geoCodeData.latitude,
-             longitude = geoCodeData.longitude,
-         )
-     }
+        compareViewModel.loadWeatherData(
+            latitude = geoCodeData.latitude,
+            longitude = geoCodeData.longitude,
+        )
+    }
 
-     val weatherData by compareViewModel.weatherDataState.collectAsState()
+    val weatherData by compareViewModel.weatherDataState.collectAsState()
 
-     val weather = WmoWeatherCode.fromCode(weatherData?.hourly?.weather_code?.get(11) ?: 0) ?: WmoWeatherCode.CLEAR_SKY
+    val calendar = Calendar.getInstance()
+    val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+
+    val weather = WmoWeatherCode.fromCode(weatherData?.hourly?.weather_code?.get(currentHour - 1) ?: 0)
+        ?: WmoWeatherCode.CLEAR_SKY
 
     Box(
         modifier = Modifier
@@ -101,13 +106,18 @@ fun WeatherView(
                         ) {
                             Text(weatherData!!.hourly.time[index])
                             Image(
-                                painter = painterResource(id = WmoWeatherCode.fromCode(weatherData!!.hourly.weather_code[index])?.imageRes ?: R.drawable.clear),
+                                painter = painterResource(
+                                    id = WmoWeatherCode.fromCode(weatherData!!.hourly.weather_code[index])?.imageRes
+                                        ?: R.drawable.clear
+                                ),
                                 contentDescription = null,
                                 modifier = Modifier.size(50.dp)
                             )
 
-                            weatherData?.hourly?.temperature_2m?.get(index)?.let { Text("${it} °C") }
-                            weatherData?.hourly?.relative_humidity_2m?.get(index)?.let { Text("${it} %") }
+                            weatherData?.hourly?.temperature_2m?.get(index)
+                                ?.let { Text("${it} °C") }
+                            weatherData?.hourly?.relative_humidity_2m?.get(index)
+                                ?.let { Text("${it} %") }
                         }
                     }
                 }
@@ -116,12 +126,12 @@ fun WeatherView(
             IconButton(
                 onClick = { /*markLocationAsFavorite(favoriteLocation)*/ }
             ) {
-               Icon(
-                   imageVector = Icons.Default.HeartBroken,
-                   tint = Color.Red,
-                   contentDescription = "Like Button",
+                Icon(
+                    imageVector = Icons.Default.HeartBroken,
+                    tint = Color.Red,
+                    contentDescription = "Like Button",
 
-                   )
+                    )
             }
         }
     }
