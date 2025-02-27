@@ -12,27 +12,35 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.HeartBroken
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-
+import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
-
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.syntax_institut.jetpack.ClimateComparer.CompareViewModel
 import de.syntax_institut.jetpack.ClimateComparer.R
 import de.syntax_institut.jetpack.ClimateComparer.WeatherComponents.WmoWeatherCode
 import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.GeoCodeData
-import de.syntax_institut.jetpack.ClimateComparer.data.local.FavoriteLocation
 import java.util.Calendar
 
 
@@ -45,6 +53,8 @@ fun WeatherView(
     modifier: Modifier = Modifier,
 
     ) {
+
+    var isFavorite by remember { mutableStateOf(false) }
 
     LaunchedEffect(geoCodeData.latitude, geoCodeData.longitude) {
         compareViewModel.loadWeatherData(
@@ -77,16 +87,19 @@ fun WeatherView(
 
         ) {
 
-            Text(geoCodeData.name)
+            Text(
+               text = geoCodeData.name,
+                style = MaterialTheme.typography.headlineLarge
+            )
 
-            Spacer(modifier.padding(20.dp))
             Image(
                 painter = painterResource(id = weather.imageRes),
                 contentDescription = weather.description,
-                modifier = Modifier.size(100.dp)
+                modifier = Modifier.size(150.dp)
             )
 
-            Text(weather.description, fontSize = 16.sp)
+            Text(weather.description, fontSize = 20.sp)
+
             Spacer(modifier.padding(20.dp))
             Text("Temperatur")
             weatherData?.hourly?.temperature_2m?.get(11)?.let { Text("${it} °C") }
@@ -94,6 +107,8 @@ fun WeatherView(
             Spacer(modifier.padding(20.dp))
             Text("Luftfeuchtigkeit")
             weatherData?.hourly?.relative_humidity_2m?.get(11)?.let { Text("${it} %") }
+
+            Spacer(modifier.padding(20.dp))
 
             LazyRow(
                 Modifier.fillMaxWidth(),
@@ -104,7 +119,9 @@ fun WeatherView(
                             modifier = Modifier.padding(8.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
+
                             Text(weatherData!!.hourly.time[index])
+
                             Image(
                                 painter = painterResource(
                                     id = WmoWeatherCode.fromCode(weatherData!!.hourly.weather_code[index])?.imageRes
@@ -123,17 +140,35 @@ fun WeatherView(
                 }
             }
 
-            IconButton(
-                onClick = { /*markLocationAsFavorite(favoriteLocation)*/ }
+            Spacer(modifier.padding(20.dp))
+
+            IconToggleButton(
+
+                checked = isFavorite,
+                onCheckedChange = {
+                    isFavorite = !isFavorite
+                }
             ) {
                 Icon(
-                    imageVector = Icons.Default.HeartBroken,
-                    tint = Color.Red,
-                    contentDescription = "Like Button",
-
-                    )
+                    tint = if (isFavorite) {
+                        Color(0xffE91E63)
+                    } else {
+                        Color(0xFF000000)
+                    },
+                    modifier = modifier
+                        .graphicsLayer {
+                        scaleX = 1.8f
+                        scaleY = 1.8f
+                    },
+                    imageVector = if (isFavorite) {
+                        Icons.Filled.Favorite
+                    } else {
+                        Icons.Default.FavoriteBorder
+                    },
+                    contentDescription = null
+                )
             }
         }
     }
-
 }
+
