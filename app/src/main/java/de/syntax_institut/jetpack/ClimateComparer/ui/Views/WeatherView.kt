@@ -12,18 +12,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.HeartBroken
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.MaterialTheme
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 
 import androidx.compose.ui.unit.dp
@@ -33,6 +41,8 @@ import de.syntax_institut.jetpack.ClimateComparer.R
 import de.syntax_institut.jetpack.ClimateComparer.WeatherComponents.WmoWeatherCode
 import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.GeoCodeData
 import de.syntax_institut.jetpack.ClimateComparer.data.local.FavoriteLocation
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 
@@ -40,11 +50,13 @@ import java.util.Calendar
 fun WeatherView(
     compareViewModel: CompareViewModel,
     geoCodeData: GeoCodeData,
-//    favoriteLocation: FavoriteLocation,
-//    markLocationAsFavorite: (FavoriteLocation) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
+) {
+    val dateTimeString = "2025-02-27T06:00"
+    val timeOnly = LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"))
+        .format(DateTimeFormatter.ofPattern("HH:mm"))
 
-    ) {
+    var isFavorite by remember { mutableStateOf(false) }
 
     LaunchedEffect(geoCodeData.latitude, geoCodeData.longitude) {
         compareViewModel.loadWeatherData(
@@ -64,9 +76,7 @@ fun WeatherView(
     Box(
         modifier = Modifier
             .fillMaxSize()
-
             .background(Color.Black.copy(alpha = 0.4f)),
-
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -74,37 +84,51 @@ fun WeatherView(
                 .padding(6.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
-
         ) {
+            // Zeit oben anzeigen
+            Text(timeOnly, fontSize = 20.sp, color = Color.White)
 
-            Text(geoCodeData.name)
+            // Stadtname
+            Text(
+                text = geoCodeData.name,
+                style = MaterialTheme.typography.headlineLarge,
+                color = Color.White
+            )
 
-            Spacer(modifier.padding(20.dp))
             Image(
                 painter = painterResource(id = weather.imageRes),
                 contentDescription = weather.description,
-                modifier = Modifier.size(100.dp)
+                modifier = Modifier.size(150.dp)
             )
 
-            Text(weather.description, fontSize = 16.sp)
-            Spacer(modifier.padding(20.dp))
-            Text("Temperatur")
-            weatherData?.hourly?.temperature_2m?.get(11)?.let { Text("${it} °C") }
+            Text(weather.description, fontSize = 20.sp, color = Color.White)
 
             Spacer(modifier.padding(20.dp))
-            Text("Luftfeuchtigkeit")
-            weatherData?.hourly?.relative_humidity_2m?.get(11)?.let { Text("${it} %") }
 
-            LazyRow(
-                Modifier.fillMaxWidth(),
-            ) {
+            Text("Temperatur", color = Color.White)
+            weatherData?.hourly?.temperature_2m?.get(11)?.let { Text("${it} °C", color = Color.White) }
+
+            Spacer(modifier.padding(20.dp))
+
+            Text("Luftfeuchtigkeit", color = Color.White)
+            weatherData?.hourly?.relative_humidity_2m?.get(11)?.let { Text("${it} %", color = Color.White) }
+
+            Spacer(modifier.padding(20.dp))
+
+            LazyRow(Modifier.fillMaxWidth()) {
                 weatherData?.hourly?.time?.indices?.toList()?.let { indices ->
                     items(indices.size) { index ->
                         Column(
                             modifier = Modifier.padding(8.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(weatherData!!.hourly.time[index])
+                            // Nur die Stunden und Minuten anzeigen
+                            val timeString = weatherData!!.hourly.time[index]
+                            val formattedTime = LocalDateTime.parse(timeString, DateTimeFormatter.ISO_DATE_TIME)
+                                .format(DateTimeFormatter.ofPattern("HH:mm")) // Nur Stunden und Minuten
+
+                            Text(formattedTime, color = Color.White)
+
                             Image(
                                 painter = painterResource(
                                     id = WmoWeatherCode.fromCode(weatherData!!.hourly.weather_code[index])?.imageRes
@@ -115,25 +139,41 @@ fun WeatherView(
                             )
 
                             weatherData?.hourly?.temperature_2m?.get(index)
-                                ?.let { Text("${it} °C") }
+                                ?.let { Text("${it} °C", color = Color.White) }
                             weatherData?.hourly?.relative_humidity_2m?.get(index)
-                                ?.let { Text("${it} %") }
+                                ?.let { Text("${it} %", color = Color.White) }
                         }
                     }
                 }
             }
 
-            IconButton(
-                onClick = { compareViewModel.markAsFavoriteLocation(geoCodeData)}
+            Spacer(modifier.padding(20.dp))
+
+            IconToggleButton(
+                checked = isFavorite,
+                onCheckedChange = {
+                    compareViewModel.markAsFavoriteLocation(geoCodeData)
+                    isFavorite = !isFavorite }
             ) {
                 Icon(
-                    imageVector = Icons.Default.HeartBroken,
-                    tint = Color.Red,
-                    contentDescription = "Like Button",
-
-                    )
+                    tint = if (isFavorite) {
+                        Color(0xffE91E63)
+                    } else {
+                        Color(0xFF000000)
+                    },
+                    modifier = modifier
+                        .graphicsLayer {
+                            scaleX = 1.8f
+                            scaleY = 1.8f
+                        },
+                    imageVector = if (isFavorite) {
+                        Icons.Filled.Favorite
+                    } else {
+                        Icons.Default.FavoriteBorder
+                    },
+                    contentDescription = null
+                )
             }
         }
     }
-
 }
