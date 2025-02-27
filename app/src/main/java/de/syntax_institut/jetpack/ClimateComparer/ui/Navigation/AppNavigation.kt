@@ -39,6 +39,7 @@ import de.syntax_institut.jetpack.ClimateComparer.CompareViewModel
 import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.GeoCodeData
 
 import de.syntax_institut.jetpack.ClimateComparer.data.local.FavoriteLocation
+import de.syntax_institut.jetpack.ClimateComparer.ui.ViewModel.HomeViewModel
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.Components.FullImageBackground
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.HomeView
 import de.syntax_institut.jetpack.ClimateComparer.ui.Views.SettingsView
@@ -50,7 +51,7 @@ import kotlinx.serialization.Serializable
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun AppNavigation() {
-
+    val homeViewModel: HomeViewModel = viewModel()
     val compareViewModel: CompareViewModel = viewModel()
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
@@ -120,7 +121,10 @@ fun AppNavigation() {
                 ) {
 
                     composable<HomeView> {
-                        HomeView()
+                        HomeView(
+                            homeViewModel = homeViewModel,
+                            compareViewModel = compareViewModel,
+                        )
                     }
 
                     composable<CompareView> {

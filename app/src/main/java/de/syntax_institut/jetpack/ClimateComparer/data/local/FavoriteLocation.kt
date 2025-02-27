@@ -19,4 +19,5 @@ data class FavoriteLocation(
     val country_id: Int = 0,
     val country: String = "",
 
-)
+
+    )

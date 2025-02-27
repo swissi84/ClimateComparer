@@ -52,9 +52,6 @@ fun WeatherView(
     geoCodeData: GeoCodeData,
     modifier: Modifier = Modifier
 ) {
-    val dateTimeString = "2025-02-27T06:00"
-    val timeOnly = LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"))
-        .format(DateTimeFormatter.ofPattern("HH:mm"))
 
     var isFavorite by remember { mutableStateOf(false) }
 
@@ -63,6 +60,7 @@ fun WeatherView(
             latitude = geoCodeData.latitude,
             longitude = geoCodeData.longitude,
         )
+     isFavorite = compareViewModel.isFavoriteLocationExists(geoCodeData.latitude , geoCodeData.longitude)
     }
 
     val weatherData by compareViewModel.weatherDataState.collectAsState()
@@ -70,7 +68,7 @@ fun WeatherView(
     val calendar = Calendar.getInstance()
     val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
 
-    val weather = WmoWeatherCode.fromCode(weatherData?.hourly?.weather_code?.get(currentHour - 1) ?: 0)
+    val weather = WmoWeatherCode.fromCode(weatherData?.hourly?.weather_code?.get(currentHour) ?: 0)
         ?: WmoWeatherCode.CLEAR_SKY
 
     Box(
@@ -85,10 +83,7 @@ fun WeatherView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Zeit oben anzeigen
-            Text(timeOnly, fontSize = 20.sp, color = Color.White)
 
-            // Stadtname
             Text(
                 text = geoCodeData.name,
                 style = MaterialTheme.typography.headlineLarge,
@@ -122,10 +117,10 @@ fun WeatherView(
                             modifier = Modifier.padding(8.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            // Nur die Stunden und Minuten anzeigen
+
                             val timeString = weatherData!!.hourly.time[index]
                             val formattedTime = LocalDateTime.parse(timeString, DateTimeFormatter.ISO_DATE_TIME)
-                                .format(DateTimeFormatter.ofPattern("HH:mm")) // Nur Stunden und Minuten
+                                .format(DateTimeFormatter.ofPattern("HH:mm"))
 
                             Text(formattedTime, color = Color.White)
 
@@ -150,9 +145,9 @@ fun WeatherView(
             Spacer(modifier.padding(20.dp))
 
             IconToggleButton(
-                checked = isFavorite,
+                checked = !isFavorite,
                 onCheckedChange = {
-                    compareViewModel.markAsFavoriteLocation(geoCodeData)
+                    compareViewModel.markAsFavoriteLocation2(geoCodeData)
                     isFavorite = !isFavorite }
             ) {
                 Icon(

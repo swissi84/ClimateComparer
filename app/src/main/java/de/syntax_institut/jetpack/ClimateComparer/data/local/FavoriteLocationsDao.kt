@@ -16,6 +16,9 @@ interface FavoriteLocationsDao {
     @Query("SELECT * FROM favorite_locations")
     fun getFavoriteLocations(): Flow<List<FavoriteLocation>>
 
+    @Query("SELECT * FROM favorite_locations WHERE latitude = :latitude AND longitude = :longitude LIMIT 1")
+    suspend fun getFavoriteLocationByCoordinates(latitude: Double, longitude: Double): FavoriteLocation?
+
     @Delete
     suspend fun deleteFavoriteLocation(favoriteLocation: FavoriteLocation)
 }

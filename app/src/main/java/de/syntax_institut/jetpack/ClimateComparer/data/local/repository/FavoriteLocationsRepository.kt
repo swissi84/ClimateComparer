@@ -1,4 +1,4 @@
-package de.syntax_institut.jetpack.ClimateComparer.data.repository
+package de.syntax_institut.jetpack.ClimateComparer.data.local.repository
 
 import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.GeoCodeData
 
@@ -12,6 +12,7 @@ interface FavoriteLocationsRepositoryInterface {
     suspend fun addFavoriteLocation(favoriteLocation: FavoriteLocation)
     suspend fun getFavoriteLocations(): Flow<List<FavoriteLocation>>
     suspend fun deleteFavoriteLocation(favoriteLocation: FavoriteLocation)
+    suspend fun getFavoriteLocationByCoordinates(latitude: Double, longitude: Double): FavoriteLocation?
 
 }
 class FavoriteLocationsRepositoryImpl(
@@ -31,7 +32,7 @@ class FavoriteLocationsRepositoryImpl(
             population = location.population,
             country_id = location.country_id,
             country = location.country,
-        )
+            )
     }
 
     override suspend fun addFavoriteLocation(favoriteLocation: FavoriteLocation) {
@@ -45,4 +46,9 @@ class FavoriteLocationsRepositoryImpl(
     override suspend fun deleteFavoriteLocation(favoriteLocation: FavoriteLocation) {
         databaseSource.deleteFavoriteLocation(favoriteLocation)
     }
+
+    override suspend fun getFavoriteLocationByCoordinates(latitude: Double, longitude: Double): FavoriteLocation? {
+        return databaseSource.getFavoriteLocationByCoordinates(latitude, longitude)
+    }
+
 }
