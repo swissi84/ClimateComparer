@@ -19,10 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
@@ -42,35 +40,38 @@ fun HomeView(
     modifier: Modifier = Modifier,
 ) {
 
+
     val savedLocations = remember { mutableStateOf<List<FavoriteLocation>>(emptyList()) }
 
 
     LaunchedEffect(Unit) {
-
         homeViewModel.getSavedFavoriteLocations().collect { locations ->
             savedLocations.value = locations
+            val firstLocation = locations.firstOrNull()
+            firstLocation?.let {
+                compareViewModel.loadWeatherData(
+                    latitude = it.latitude,
+                    longitude = it.longitude
+                )
+            }
         }
     }
 
+    val weatherData by compareViewModel.weatherDataState.collectAsState()
 
     if (savedLocations.value.isNotEmpty()) {
-        val weatherData by compareViewModel.weatherDataState.collectAsState()
-
-
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(6.dp)
         ) {
             items(savedLocations.value) { location ->
-
                 val calendar = Calendar.getInstance()
                 val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-
                 val weather = WmoWeatherCode.fromCode(
                     weatherData?.hourly?.weather_code?.get(currentHour) ?: 0
-                )
-                    ?: WmoWeatherCode.CLEAR_SKY
+                ) ?: WmoWeatherCode.CLEAR_SKY
+
                 Box(
                     modifier = Modifier
                         .padding(8.dp)
@@ -78,11 +79,9 @@ fun HomeView(
                         .background(
                             Color.Black.copy(alpha = 0.3f),
                             shape = RoundedCornerShape(8.dp)
-                        ) // Hintergrundfarbe und abgerundete Ecken
-                        .padding(16.dp) // Innenabstand
+                        )
+                        .padding(16.dp)
                 ) {
-
-
                     Column(
                         modifier = Modifier
                             .padding(6.dp)
@@ -90,13 +89,11 @@ fun HomeView(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-
                         Text(
                             text = location.name,
                             style = MaterialTheme.typography.headlineLarge,
                             color = Color.White
                         )
-
 
                         Image(
                             painter = painterResource(id = weather.imageRes),
@@ -104,35 +101,28 @@ fun HomeView(
                             modifier = Modifier.size(150.dp)
                         )
 
-
                         Text(weather.description, fontSize = 20.sp, color = Color.White)
 
                         Spacer(modifier.padding(20.dp))
 
-
                         Text("Temperatur", color = Color.White)
-                        weatherData?.hourly?.temperature_2m?.get(11)
+                        weatherData?.hourly?.temperature_2m?.get(currentHour)
                             ?.let { Text("${it} °C", color = Color.White) }
 
                         Spacer(modifier.padding(20.dp))
 
-
                         Text("Luftfeuchtigkeit", color = Color.White)
-                        weatherData?.hourly?.relative_humidity_2m?.get(11)
+                        weatherData?.hourly?.relative_humidity_2m?.get(currentHour)
                             ?.let { Text("${it} %", color = Color.White) }
-
-                        Spacer(modifier.padding(20.dp))
                     }
-
                 }
             }
         }
     } else {
+        // Wenn keine gespeicherten Standorte vorhanden sind, eine Nachricht anzeigen
         Box(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
-
         ) {
             Text("Kein gespeicherter Standort gefunden", color = Color.White)
         }

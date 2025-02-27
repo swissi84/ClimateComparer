@@ -30,7 +30,7 @@ fun CompareView(
     onNavigateToWeatherView: (GeoCodeData) -> Unit,
 ) {
 
-    val weatherData by compareViewModel.weatherDataState.collectAsState()
+
     val geoCodeData by compareViewModel.geoCodeDataState.collectAsState()
 
     var searchQuery by remember { mutableStateOf("") }
