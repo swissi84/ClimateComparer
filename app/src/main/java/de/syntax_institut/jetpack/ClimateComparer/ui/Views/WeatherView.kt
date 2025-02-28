@@ -63,13 +63,14 @@ fun WeatherView(
      isFavorite = compareViewModel.isFavoriteLocationExists(geoCodeData.latitude , geoCodeData.longitude)
     }
 
-    val weatherData by compareViewModel.weatherDataState.collectAsState()
-
     val calendar = Calendar.getInstance()
     val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
 
+    val weatherData by compareViewModel.weatherDataState.collectAsState()
+
     val weather = WmoWeatherCode.fromCode(weatherData?.hourly?.weather_code?.get(currentHour) ?: 0)
         ?: WmoWeatherCode.CLEAR_SKY
+
 
     Box(
         modifier = Modifier
@@ -83,7 +84,7 @@ fun WeatherView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-
+            Text(currentHour.toString())
             Text(
                 text = geoCodeData.name,
                 style = MaterialTheme.typography.headlineLarge,
@@ -91,7 +92,7 @@ fun WeatherView(
             )
 
             Image(
-                painter = painterResource(id = weather.imageRes),
+                painter = painterResource(id = WmoWeatherCode.fromCode(weatherData!!.hourly.weather_code[currentHour])?.imageRes ?: R.drawable.clear),
                 contentDescription = weather.description,
                 modifier = Modifier.size(150.dp)
             )
@@ -101,12 +102,12 @@ fun WeatherView(
             Spacer(modifier.padding(20.dp))
 
             Text("Temperatur", color = Color.White)
-            weatherData?.hourly?.temperature_2m?.get(11)?.let { Text("${it} °C", color = Color.White) }
+            weatherData?.hourly?.temperature_2m?.get(currentHour)?.let { Text("${it} °C", color = Color.White) }
 
             Spacer(modifier.padding(20.dp))
 
             Text("Luftfeuchtigkeit", color = Color.White)
-            weatherData?.hourly?.relative_humidity_2m?.get(11)?.let { Text("${it} %", color = Color.White) }
+            weatherData?.hourly?.relative_humidity_2m?.get(currentHour)?.let { Text("${it} %", color = Color.White) }
 
             Spacer(modifier.padding(20.dp))
 

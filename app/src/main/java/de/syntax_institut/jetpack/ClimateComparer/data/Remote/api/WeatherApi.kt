@@ -40,7 +40,7 @@ interface GetWeather {
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
         @Query("hourly") hourly: String = "temperature_2m,relative_humidity_2m,weather_code",
-        @Query("forecast_days") forecastDays: Int = 7,
+        @Query("forecast_days") forecastDays: Int = 1,
 
 
         ): WeatherResponse

@@ -43,7 +43,6 @@ fun HomeView(
 
     val savedLocations = remember { mutableStateOf<List<FavoriteLocation>>(emptyList()) }
 
-
     LaunchedEffect(Unit) {
         homeViewModel.getSavedFavoriteLocations().collect { locations ->
             savedLocations.value = locations
@@ -57,6 +56,7 @@ fun HomeView(
         }
     }
 
+
     val weatherData by compareViewModel.weatherDataState.collectAsState()
 
     if (savedLocations.value.isNotEmpty()) {
@@ -66,6 +66,8 @@ fun HomeView(
                 .padding(6.dp)
         ) {
             items(savedLocations.value) { location ->
+
+
                 val calendar = Calendar.getInstance()
                 val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
                 val weather = WmoWeatherCode.fromCode(

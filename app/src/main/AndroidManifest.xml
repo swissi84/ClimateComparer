@@ -11,7 +11,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/weatherapp"
-        android:label="@string/NasaApp"
+        android:label="@string/ClimateComparer"
         android:roundIcon="@mipmap/weatherapp_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -19,7 +19,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/NasaApp"
+            android:label="@string/ClimateComparer"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
