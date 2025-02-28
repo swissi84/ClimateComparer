@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -40,88 +38,74 @@ fun HomeView(
     modifier: Modifier = Modifier,
 ) {
 
-
     val savedLocations = remember { mutableStateOf<List<FavoriteLocation>>(emptyList()) }
+    val weatherData by compareViewModel.weatherDataState.collectAsState()
 
     LaunchedEffect(Unit) {
         homeViewModel.getSavedFavoriteLocations().collect { locations ->
             savedLocations.value = locations
-            val firstLocation = locations.firstOrNull()
-            firstLocation?.let {
+            if (locations.isNotEmpty()) {
                 compareViewModel.loadWeatherData(
-                    latitude = it.latitude,
-                    longitude = it.longitude
+                    latitude = locations[0].latitude,
+                    longitude = locations[0].longitude,
                 )
             }
         }
     }
 
-
-    val weatherData by compareViewModel.weatherDataState.collectAsState()
-
     if (savedLocations.value.isNotEmpty()) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(6.dp)
-        ) {
-            items(savedLocations.value) { location ->
+        val calendar = Calendar.getInstance()
+            val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+            val weather = WmoWeatherCode.fromCode(
+                weatherData?.hourly?.weather_code?.get(currentHour) ?: 0
+            ) ?: WmoWeatherCode.CLEAR_SKY
 
+            Box(
+                modifier = Modifier
+                    .padding(60.dp)
+                    .padding(vertical = 50.dp)
+                    .background(
+                        Color.Black.copy(alpha = 0.4f),
+                        shape = RoundedCornerShape(16.dp)
+                    ),
 
-                val calendar = Calendar.getInstance()
-                val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-                val weather = WmoWeatherCode.fromCode(
-                    weatherData?.hourly?.weather_code?.get(currentHour) ?: 0
-                ) ?: WmoWeatherCode.CLEAR_SKY
-
-                Box(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth()
-                        .background(
-                            Color.Black.copy(alpha = 0.3f),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .padding(16.dp)
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    modifier = Modifier,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(6.dp)
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = location.name,
-                            style = MaterialTheme.typography.headlineLarge,
-                            color = Color.White
-                        )
+                    Text(
+                        text = savedLocations.value[0].name,
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = Color.White
+                    )
 
-                        Image(
-                            painter = painterResource(id = weather.imageRes),
-                            contentDescription = weather.description,
-                            modifier = Modifier.size(150.dp)
-                        )
+                    Image(
+                        painter = painterResource(id = weather.imageRes),
+                        contentDescription = weather.description,
+                        modifier = Modifier.size(150.dp)
+                    )
 
-                        Text(weather.description, fontSize = 20.sp, color = Color.White)
+                    Text(weather.description, fontSize = 20.sp, color = Color.White)
 
-                        Spacer(modifier.padding(20.dp))
+                    Spacer(modifier.padding(20.dp))
 
-                        Text("Temperatur", color = Color.White)
-                        weatherData?.hourly?.temperature_2m?.get(currentHour)
-                            ?.let { Text("${it} °C", color = Color.White) }
+                    Text("Temperatur", color = Color.White)
+                    weatherData?.hourly?.temperature_2m?.get(currentHour)
+                        ?.let { Text("${it} °C", color = Color.White) }
 
-                        Spacer(modifier.padding(20.dp))
+                    Spacer(modifier.padding(20.dp))
 
-                        Text("Luftfeuchtigkeit", color = Color.White)
-                        weatherData?.hourly?.relative_humidity_2m?.get(currentHour)
-                            ?.let { Text("${it} %", color = Color.White) }
-                    }
+                    Text("Luftfeuchtigkeit", color = Color.White)
+                    weatherData?.hourly?.relative_humidity_2m?.get(currentHour)
+                        ?.let { Text("${it} %", color = Color.White) }
                 }
             }
-        }
+
+
     } else {
-        // Wenn keine gespeicherten Standorte vorhanden sind, eine Nachricht anzeigen
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center

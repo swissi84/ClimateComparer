@@ -84,7 +84,7 @@ fun WeatherView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(currentHour.toString())
+
             Text(
                 text = geoCodeData.name,
                 style = MaterialTheme.typography.headlineLarge,
@@ -155,7 +155,7 @@ fun WeatherView(
                     tint = if (isFavorite) {
                         Color(0xffE91E63)
                     } else {
-                        Color(0xFF000000)
+                        MaterialTheme.colorScheme.surface
                     },
                     modifier = modifier
                         .graphicsLayer {

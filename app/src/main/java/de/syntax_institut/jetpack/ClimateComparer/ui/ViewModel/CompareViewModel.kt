@@ -40,7 +40,6 @@ application: Application
     }
 
 
-
     fun loadGeoCode(geoSearch: String) {
         viewModelScope.launch {
             try {

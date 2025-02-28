@@ -10,16 +10,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import de.syntax_institut.jetpack.ClimateComparer.R
+
 
 @Composable
-fun FullImageBackground() {
+fun FullImageBackground(selectedBackground: Int) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
 
         Image(
-            painter = painterResource(id = R.drawable.background3),
+            painter = painterResource(id = selectedBackground),
             contentDescription = "Background Image",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
@@ -29,7 +29,7 @@ fun FullImageBackground() {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.4f))
+                    .background(Color.Black.copy(alpha = 0.1f))
             )
         } else {
             Box(

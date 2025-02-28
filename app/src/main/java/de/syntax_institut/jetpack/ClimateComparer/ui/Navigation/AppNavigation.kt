@@ -20,6 +20,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -36,6 +39,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import de.syntax_institut.fakeStore.CompareView
 import de.syntax_institut.jetpack.ClimateComparer.CompareViewModel
+import de.syntax_institut.jetpack.ClimateComparer.R
 import de.syntax_institut.jetpack.ClimateComparer.data.Remote.api.GeoCodeData
 
 import de.syntax_institut.jetpack.ClimateComparer.data.local.FavoriteLocation
@@ -54,7 +58,10 @@ fun AppNavigation() {
     val homeViewModel: HomeViewModel = viewModel()
     val compareViewModel: CompareViewModel = viewModel()
     val navController = rememberNavController()
+
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
+
+    var selectedBackground by remember { mutableStateOf(R.drawable.background1) }
 
     AppTheme {
         Box(
@@ -62,7 +69,9 @@ fun AppNavigation() {
                 .fillMaxSize()
         ) {
 
-            FullImageBackground()
+            FullImageBackground(
+                selectedBackground = selectedBackground
+            )
 
             Scaffold(modifier = Modifier
                 .fillMaxSize(),
@@ -174,7 +183,9 @@ fun AppNavigation() {
                     }
 
                     composable<SettingsView> {
-                        SettingsView()
+                        SettingsView(
+                            onBackgroundSelected = { selectedBackground = it }
+                        )
                     }
 
                 }
