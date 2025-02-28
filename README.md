@@ -7,11 +7,12 @@ Die App wird in Kotlin mit Jetpack Compose entwickelt und nutzt die  Open-Meteo-
 
 ## Design
 
+HomeView
 <img src = "https://github.com/user-attachments/assets/08dc7cf0-c89b-4fb9-906b-fa5ae431e75c" width="400">
 
-![WeatherApp_Weather](https://github.com/user-attachments/assets/803f8ed0-fa67-44eb-aeb0-dc8fb61c2ae0)
+<img src = "https://github.com/user-attachments/assets/803f8ed0-fa67-44eb-aeb0-dc8fb61c2ae0" width="400">
 
-![WeatherApp_Settings](https://github.com/user-attachments/assets/285dfa16-c1b8-4615-97ad-a4132e8fe01a)
+<img src = "https://github.com/user-attachments/assets/285dfa16-c1b8-4615-97ad-a4132e8fe01a" width="400">
 
 ## Features
 
