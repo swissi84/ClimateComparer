@@ -35,7 +35,6 @@ fun CompareView(
 
     var searchQuery by remember { mutableStateOf("") }
 
-
     Column(modifier = Modifier.padding(16.dp)) {
 
         TextField(
