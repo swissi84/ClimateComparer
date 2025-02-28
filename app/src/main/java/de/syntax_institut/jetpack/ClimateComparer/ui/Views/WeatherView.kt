@@ -92,7 +92,7 @@ fun WeatherView(
             )
 
             Image(
-                painter = painterResource(id = WmoWeatherCode.fromCode(weatherData!!.hourly.weather_code[currentHour])?.imageRes ?: R.drawable.clear),
+                painter = painterResource(id = weather.imageRes),
                 contentDescription = weather.description,
                 modifier = Modifier.size(150.dp)
             )
